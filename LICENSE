@@ -5,6 +5,7 @@ The MIT License below applies exclusively to these configuration and
 documentation files (the "Software"):
 
 - .cursor-plugin/plugin.json
+- .grok-plugin/plugin.json
 - mcp.json
 - skills/memory/SKILL.md
 - README.md
