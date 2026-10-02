@@ -1,0 +1,15 @@
+{
+  "name": "prometheor",
+  "version": "0.4.10",
+  "description": "Recall relevant Prometheor memory and save concise durable facts under your current consent settings.",
+  "author": {
+    "name": "Prometheor"
+  },
+  "homepage": "https://prometheor.com",
+  "keywords": [
+    "prometheor"
+  ],
+  "logo": "assets/icon.svg",
+  "skills": "./skills",
+  "mcpServers": "./mcp.json"
+}
