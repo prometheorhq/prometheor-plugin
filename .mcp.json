@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "prometheor": {
+      "type": "http",
+      "url": "https://app.prometheor.com/mcp"
+    }
+  }
+}

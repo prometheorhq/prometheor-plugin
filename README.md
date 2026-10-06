@@ -4,7 +4,7 @@ Prometheor connects your AI assistant to externally stored personal preferences 
 
 ## Connection and use
 
-The repository includes `.cursor-plugin/plugin.json` for Cursor and `.grok-plugin/plugin.json` for the separate Grok Build developer plugin catalog. Both reference the same `mcp.json` and `skills/memory/SKILL.md`. Grok Build catalog inclusion is distinct from consumer Grok Chat connections and from Cursor's Grok Bot. No installation or approval on any of those surfaces is implied.
+The repository includes `.claude-plugin/plugin.json` for Claude, `.cursor-plugin/plugin.json` for Cursor and `.grok-plugin/plugin.json` for the separate Grok Build developer plugin catalog. All use `skills/memory/SKILL.md` and the same HTTPS MCP endpoint. Claude uses `.mcp.json`; Cursor and Grok Build use `mcp.json`. Grok Build catalog inclusion is distinct from consumer Grok Chat connections and from Cursor's Grok Bot. No installation or approval on any of those surfaces is implied.
 
 Enable the plugin and authenticate to your own admitted Prometheor account through the host's OAuth connection to https://app.prometheor.com/mcp. Do not enter owner API keys or share another person's account. Use only the authorized personal scope. Ask the assistant to recall a relevant saved preference or explicitly save one concise durable fact. Prometheor Settings controls account saving choices. Only enable automatic saving after giving explicit account-wide consent. A current private or do-not-save instruction overrides the setting. The skill excludes credentials, raw transcripts and regulated or special-category sensitive data.
 
@@ -18,7 +18,7 @@ Review, correct and delete saved records at https://app.prometheor.com/workspace
 
 ## License and brand assets
 
-The Cursor and Grok Build manifests, MCP configuration, memory skill and this README are licensed under MIT; see [LICENSE](LICENSE) for the exact scope and text. The hosted service and backend are not included. The Wisp artwork in `assets/icon.svg`, Prometheor names, logos and other brand identifiers are excluded from MIT, with rights reserved. No trademark rights are granted by the MIT license. Marketplace terms may separately grant specific display, distribution and promotion rights.
+The Claude, Cursor and Grok Build manifests, MCP configuration, memory skill and this README are licensed under MIT; see [LICENSE](LICENSE) for the exact scope and text. The hosted service and backend are not included. The original orange-red Prometheor logo in `assets/icon.svg`, Prometheor names, logos and other brand identifiers are excluded from MIT, with rights reserved. No trademark rights are granted by the MIT license. Marketplace terms may separately grant specific display, distribution and promotion rights.
 
 ## Review status
 
