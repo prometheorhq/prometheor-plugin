@@ -1,8 +1,8 @@
 {
   "name": "prometheor",
   "displayName": "Prometheor",
-  "version": "0.4.10",
-  "description": "Recall relevant Prometheor memory and save concise durable facts under your current consent settings.",
+  "version": "0.4.11",
+  "description": "Recall your Prometheor project logbook and keep it current: decisions, status changes and verified results under your current saving choice.",
   "author": {
     "name": "Prometheor",
     "email": "info@prometheor.com",

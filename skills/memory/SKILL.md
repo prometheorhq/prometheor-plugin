@@ -1,9 +1,9 @@
 ---
 name: memory
-description: Recall relevant personal preferences and project decisions from Prometheor when the user has enabled this connected plugin for continuity. Keep concise new durable facts only under the current server-reported saving choice or an explicit save request. Skip unrelated one-off tasks and continue the user's task when memory is unavailable.
+description: Recall the project logbook and saved preferences from Prometheor when the user has enabled this connected plugin for continuity. Automatically keep only a thin project logbook (decisions, status changes, verified results) under the server-reported saving choice; save anything else only on an explicit request. Skip unrelated one-off tasks and continue the user's task when memory is unavailable.
 ---
 
-# Personal memory with Prometheor
+# Project logbook and memory with Prometheor
 
 Use the existing authenticated connection and the host's advertised tool schemas.
 This workflow grants no new access. Current user instructions take precedence.
@@ -41,9 +41,13 @@ Honor private use, access restrictions and revocation.
 ## Save under the user's current choice
 
 Read `automatic_saving` from a current authorized recall. When it is `on`, keep
-new durable user-stated facts, preferences and decisions relevant to continuity
-without requiring a separate remember command. When it is `off`, `unknown` or
-absent, save only on an explicit request. A failed lookup is not saving consent.
+a thin project logbook without waiting for a remember command: save one entry,
+with `logEntry` set to `decision`, `status` or `result`, when a project decision
+is made, a project's status changes (started, blocked, finished, a milestone
+reached) or a verified result arises. Save it to the project the work belongs to.
+Save anything else, such as who the user is, preferences, people, tools or plans,
+only when the user explicitly asks. When `automatic_saving` is `off`, `unknown`
+or absent, save only on an explicit request. A failed lookup is not saving consent.
 Installation or connection alone does not grant consent. Settings in the web app
 controls the account choice; this package has no local switch script.
 
@@ -52,11 +56,13 @@ account setting is on. Do not send that private statement to a recall or save
 call. For enabling, disabling or reviewing account saving, direct the user to
 Prometheor Settings; do not claim to have changed it through unavailable tools.
 
-Use `prometheor_append_checkpoint` without `projectId`, with the granted
-sensitivity, a short title of at most eight words, one standalone fact of at most
-three sentences, and a topic from the current schema. Check for an equivalent
-memory first. Do not save recalled facts, small talk, transient progress, tool
-output, deployment logs or test/example data automatically. Explicit synthetic
+Use `prometheor_append_checkpoint` with the granted sensitivity, a short title of
+at most eight words, one standalone statement in plain language of at most three
+sentences, and a topic from the current schema. Pass `projectId` only for a
+logbook entry of a project the server returned; otherwise omit it. Check for an equivalent
+memory first. Do not save step-by-step progress, recalled facts, small talk, raw logs, tool or
+command output, or test/example data automatically; skip anything a recalled
+entry already covers. Explicit synthetic
 review-test saves may follow the reviewer's explicit request.
 
 Never save credentials, passwords, recovery material, raw transcripts or whole
