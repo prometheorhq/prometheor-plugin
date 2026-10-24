@@ -10,6 +10,7 @@ documentation files (the "Software"):
 - .grok-plugin/plugin.json
 - mcp.json
 - skills/memory/SKILL.md
+- skills/delegate/SKILL.md
 - README.md
 
 assets/icon.svg, the Wisp mascot, Prometheor names, logos and other brand
