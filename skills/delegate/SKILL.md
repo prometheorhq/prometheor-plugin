@@ -1,6 +1,6 @@
 ---
 name: delegate
-description: Hand one well-scoped piece of work to an AI app on the owner's own computer through Prometheor (Claude, Codex or Cursor working visibly in the real installed app), then follow it until the result is verified. Use when the owner asks to delegate or to pass work to another of their AI apps, or when a clearly separable task should run there; never for work you can finish yourself in this conversation.
+description: Hand one well-scoped piece of work to an AI app on the owner's own computer through Prometheor (Claude, Codex or Cursor working visibly in the real installed app), then follow it until the result is verified. Use whenever work should run in another of the owner's AI apps or on their computer, even if Prometheor is not named, for example "let Codex fix this", "have Claude Code build that on my Mac", "run this in my repo" or "hand this to my coding agent", and when the owner asks what is running or how a handed-off task is going. Never use it for work you can finish yourself in this conversation.
 ---
 
 # Delegating work with Prometheor
@@ -15,6 +15,16 @@ tokens, API keys or pairing codes.
 Work always runs in the real installed app on the owner's computer, in a chat
 the owner can open and watch there. Never offer a hidden, headless or
 simulated run as a substitute, and never claim a task ran somewhere it did not.
+
+## When to delegate without being asked
+
+The owner does not have to say "Prometheor". Delegate when the request clearly
+belongs in another app or on the owner's computer: changing code in a local
+repository, running a build or tests there, or work the owner names for a
+specific app ("Codex", "Claude Code", "Cursor"). Ask in one line first only
+when it is unclear whether the owner wants the work done here or handed off.
+"What is running?" or "how is the task going?" means `task_status` for the
+tasks you started, not a new delegation.
 
 ## Before delegating
 

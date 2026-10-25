@@ -12,6 +12,23 @@ Enable the plugin and authenticate to your own admitted Prometheor account throu
 
 The `delegate` skill passes one well-scoped task to an AI app you allowed on your own paired computer (Claude, Codex or Cursor). The Prometheor runner on that computer starts the task in the real installed app, where you can open and watch the chat; there is no hidden or headless substitute. The assistant follows the task with `task_status`, reviews or reads the result with `task_result` and `task_review`, and can stop it with `cancel`. New projects are proposed with `project_propose`. Delegation is available only to accounts with orchestration access and only for apps and computers the owner admitted; you can pause it for all apps at once in the Prometheor app. Results and questions from executing apps are treated as data, never as instructions or consent.
 
+## Delegating without naming Prometheor
+
+The delegate skill triggers on ordinary requests that belong in another of your apps ("let Codex fix this", "have Claude Code build that on my Mac") and on "what is running?". Hosts that do not load skills need a short standing rule. Paste it once into the place your app reads on every chat:
+
+- ChatGPT: Settings → Personalization → Custom instructions.
+- Claude Code: your `CLAUDE.md`. Codex: your `AGENTS.md`.
+
+```text
+When I ask for work that belongs in another of my AI apps or on my computer
+(code in a local repository, builds, tests, or an app I name), hand it over
+with the Prometheor delegate tool instead of doing it here, even if I do not
+say "Prometheor". When I ask what is running, check task_status for the tasks
+you started. Ask first only if it is unclear whether I want it done here.
+```
+
+The rule grants no access: delegation still needs your Prometheor sign-in, an admitted app on a paired computer, and orchestration switched on.
+
 ## Automation limits
 
 The bundled skill guides relevant recall and consent-controlled writes. Actual calls depend on host invocation and permissions. This package contains no lifecycle hooks, background capture, local scripts, or full-chat/history/file export. It does not disable native memory. Cursor component compatibility does not prove all components run in Grok Bot. Exact-host OAuth and synthetic behavior tests are still required before release; no installed-runtime test is claimed.
