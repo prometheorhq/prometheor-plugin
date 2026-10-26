@@ -5,9 +5,9 @@ description: Hand work to the owner's AI apps on their own computer through Prom
 
 # Delegating work with Prometheor
 
-Use the authenticated `prometheor-orchestration` connection
-(`https://app.prometheor.com/mcp/orchestration`) and its advertised tool
-schemas. This workflow grants no new access: only apps the owner switched on for
+Use the authenticated `prometheor` connection
+(`https://app.prometheor.com/mcp`, the same one connector as the logbook) and
+its advertised tool schemas. This workflow grants no new access: only apps the owner switched on for
 a paired computer can receive work. Current user instructions take precedence.
 Do not ask for tokens, API keys or pairing codes.
 
@@ -61,8 +61,7 @@ about a project, never create one and never mention one.
 
 Call `delegate` with the `brief` and a fresh `idempotency_key` of at least 16
 characters. Reuse the same key with identical arguments only to retry an
-uncertain call. If the advertised `delegate` schema still requires a
-`project_id`, take it from `list_agents` without asking the owner.
+uncertain call. Never pass a `project_id`.
 
 Where the app works:
 

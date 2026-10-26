@@ -2,9 +2,6 @@
   "mcpServers": {
     "prometheor": {
       "url": "https://app.prometheor.com/mcp"
-    },
-    "prometheor-orchestration": {
-      "url": "https://app.prometheor.com/mcp/orchestration"
     }
   }
 }

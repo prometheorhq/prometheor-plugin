@@ -1,7 +1,7 @@
 {
   "name": "prometheor",
   "displayName": "Prometheor",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Recall your Prometheor logbook and keep it current, and hand work to your AI apps on your own computer when you ask, where they run visibly in the real app.",
   "author": {
     "name": "Prometheor",

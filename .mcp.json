@@ -3,10 +3,6 @@
     "prometheor": {
       "type": "http",
       "url": "https://app.prometheor.com/mcp"
-    },
-    "prometheor-orchestration": {
-      "type": "http",
-      "url": "https://app.prometheor.com/mcp/orchestration"
     }
   }
 }
