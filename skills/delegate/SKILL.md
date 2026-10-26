@@ -42,10 +42,24 @@ tasks you started, not a new delegation.
 
 ## Delegate
 
-Call `delegate` with `project_id`, the `brief`, a narrow `scope` (paths inside
-the project folder; `.` only when the whole folder is needed) and a fresh
-`idempotency_key` of at least 16 characters. Reuse the same key with identical
-arguments only to retry an uncertain call.
+Call `delegate` with `project_id`, the `brief` and a fresh `idempotency_key` of
+at least 16 characters. Reuse the same key with identical arguments only to
+retry an uncertain call.
+
+The app works with its own settings on the owner's computer. Do not restrict it
+unless the owner asks:
+
+- Leave `scope` out (the whole project folder) unless the owner limits the
+  task to certain paths.
+- Set `execution` fields (`model`, `reasoning_effort`, `permission_mode`,
+  `commands` with `/goal`) only when the owner names them. Check the
+  executor's `execution_options` in `list_agents` first.
+- `permission_mode` (`read_only`, `ask`, `edits`, `auto`, `full`) can restrict
+  the app or widen it beyond its default on that computer, up to `full` (no
+  approvals at all). Widen only when the owner explicitly asks for that mode;
+  the result names a widening. If a task fails with `needs_permission`, tell
+  the owner which setting blocked it and ask whether to retry with a
+  permission mode or change the default in the app.
 
 Choose the executor:
 

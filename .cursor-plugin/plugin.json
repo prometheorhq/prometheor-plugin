@@ -1,6 +1,6 @@
 {
   "name": "prometheor",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Recall your Prometheor project logbook and keep it current, and hand well-scoped tasks to your AI apps on your own computer, where they run visibly in the real app.",
   "author": {
     "name": "Prometheor"
