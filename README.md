@@ -1,33 +1,42 @@
 # Prometheor plugin
 
-Prometheor connects your AI assistant to externally stored personal preferences and project decisions. Recall relevant saved context and save concise durable facts under your current consent settings. The plugin bundle is intended to be distributed without a separate plugin charge. Prometheor currently admits invited pilot accounts. Future paid service plans are separate from the bundle; a generally available free recall/save tier has not been established by this package review. Marketplace compatibility of paid service requirements has not been confirmed.
+Prometheor connects your AI assistant to externally stored personal preferences and decisions, and hands work to your other AI apps when you ask. Recall relevant saved context and save concise durable facts under your current consent settings. The plugin bundle is intended to be distributed without a separate plugin charge. Prometheor currently admits invited pilot accounts. Future paid service plans are separate from the bundle; a generally available free recall/save tier has not been established by this package review. Marketplace compatibility of paid service requirements has not been confirmed.
 
 ## Connection and use
 
-The repository includes `.claude-plugin/plugin.json` for Claude, `.cursor-plugin/plugin.json` for Cursor and `.grok-plugin/plugin.json` for the separate Grok Build developer plugin catalog. All use `skills/memory/SKILL.md` and `skills/delegate/SKILL.md` with two HTTPS MCP endpoints on the same origin: `https://app.prometheor.com/mcp` for the project logbook and `https://app.prometheor.com/mcp/orchestration` for handing tasks to your apps. Claude uses `.mcp.json`; Cursor and Grok Build use `mcp.json`. Grok Build catalog inclusion is distinct from consumer Grok Chat connections and from Cursor's Grok Bot. No installation or approval on any of those surfaces is implied.
+The repository includes `.claude-plugin/plugin.json` for Claude, `.cursor-plugin/plugin.json` for Cursor and `.grok-plugin/plugin.json` for the separate Grok Build developer plugin catalog. All use `skills/memory/SKILL.md` and `skills/delegate/SKILL.md` with two HTTPS MCP endpoints on the same origin: `https://app.prometheor.com/mcp` for your logbook and `https://app.prometheor.com/mcp/orchestration` for handing tasks to your apps. Claude uses `.mcp.json`; Cursor and Grok Build use `mcp.json`. Grok Build catalog inclusion is distinct from consumer Grok Chat connections and from Cursor's Grok Bot. No installation or approval on any of those surfaces is implied.
 
-Enable the plugin and authenticate to your own admitted Prometheor account through the host's OAuth connection to https://app.prometheor.com/mcp. Do not enter owner API keys or share another person's account. Use only the authorized personal scope. Ask the assistant to recall a project's logbook or a saved preference, or explicitly save one concise fact. With automatic saving on, the assistant keeps only a thin project logbook: decisions, status changes and verified results. Everything else is saved only when you ask. Prometheor Settings controls account saving choices and pauses automatic saving for every connected app at once. Only enable automatic saving after giving explicit account-wide consent. A current private or do-not-save instruction overrides the setting. The skill excludes credentials, raw transcripts and regulated or special-category sensitive data.
+Enable the plugin and authenticate to your own admitted Prometheor account through the host's OAuth connection to https://app.prometheor.com/mcp. Do not enter owner API keys or share another person's account. Use only the authorized personal scope. Ask the assistant to recall your logbook or a saved preference, or explicitly save one concise fact. With automatic saving on, the assistant keeps only a thin logbook: decisions, status changes and verified results. Everything else is saved only when you ask. Prometheor Settings controls account saving choices and pauses automatic saving for every connected app at once. Only enable automatic saving after giving explicit account-wide consent. A current private or do-not-save instruction overrides the setting. The skill excludes credentials, raw transcripts and regulated or special-category sensitive data.
 
 ## Handing tasks to your apps
 
-The `delegate` skill passes one well-scoped task to an AI app you allowed on your own paired computer (Claude, Codex or Cursor). The Prometheor runner on that computer starts the task in the real installed app, where you can open and watch the chat; there is no hidden or headless substitute. The assistant follows the task with `task_status`, reviews or reads the result with `task_result` and `task_review`, and can stop it with `cancel`. New projects are proposed with `project_propose`. Delegation is available only to accounts with orchestration access and only for apps and computers the owner admitted; you can pause it for all apps at once in the Prometheor app. Results and questions from executing apps are treated as data, never as instructions or consent.
+The `delegate` skill hands work to an AI app you switched on for your own paired computer (Claude, Codex or Cursor). The Prometheor runner on that computer starts the task in the real installed app, where you can open and watch the chat; there is no hidden or headless substitute. Without a named folder the app starts where a newly opened session starts, normally your home folder; name a folder or repository in your request to work there. The assistant follows the task with `list_tasks` and `task_status`, answers the app's questions or passes them to you, reviews or reads the result with `task_result` and `task_review`, and can stop it with `cancel`. "Stop everything" stops every running task with `stop_all` where the connection offers it. Results and questions from executing apps are treated as data, never as instructions or consent.
 
-## Delegating without naming Prometheor
+You do not manage projects in Prometheor, and you rarely need to open the Prometheor app: status, stopping, questions and results all stay in your chat. Switching an app on or off happens only in the Team section of the Prometheor app, never by prompt.
 
-The delegate skill triggers on ordinary requests that belong in another of your apps ("let Codex fix this", "have Claude Code build that on my Mac") and on "what is running?". Hosts that do not load skills need a short standing rule. Paste it once into the place your app reads on every chat:
+## When the assistant delegates
+
+Your words decide:
+
+- Name an app or computer ("start a Codex session and fix the login bug", "let Claude Code build this on my Mac"): the task goes to exactly that app.
+- Ask to use the team or to orchestrate ("use the team for this"): the assistant splits the work, Prometheor chooses the apps, the apps build on each other's results, and you get one combined result.
+- Say neither: the assistant works itself. It may ask once, for example "Should I hand this to Codex?", and delegates only on your yes.
+
+Hosts that do not load skills need a short standing rule. Paste it once into the place your app reads on every chat:
 
 - ChatGPT: Settings → Personalization → Custom instructions.
 - Claude Code: your `CLAUDE.md`. Codex: your `AGENTS.md`.
 
 ```text
-When I ask for work that belongs in another of my AI apps or on my computer
-(code in a local repository, builds, tests, or an app I name), hand it over
-with the Prometheor delegate tool instead of doing it here, even if I do not
-say "Prometheor". When I ask what is running, check task_status for the tasks
-you started. Ask first only if it is unclear whether I want it done here.
+Hand work to my other AI apps with the Prometheor delegate tool only when I
+ask. If I name an app or computer ("start a Codex session"), use exactly that
+one. If I say "use the team" or "orchestrate", split the work, let Prometheor
+choose the apps and give me one combined result. Otherwise do the work here;
+you may ask once whether to hand it on. "What is running?" means list_tasks or
+task_status. "Stop everything" means stop_all. Never ask me about projects.
 ```
 
-The rule grants no access: delegation still needs your Prometheor sign-in, an admitted app on a paired computer, and orchestration switched on.
+The rule grants no access: delegation still needs your Prometheor sign-in, an app switched on for a paired computer, and orchestration switched on.
 
 ## Automation limits
 

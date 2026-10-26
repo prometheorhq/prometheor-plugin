@@ -15,8 +15,8 @@ for tokens, API keys or private exports.
 When saved context could help the current task, call `prometheor_compile_context`
 directly with a short task description. Omit `projectId` for ordinary personal
 recall, exact reads and saves: the server resolves the authorized personal scope.
-Do not discover a workspace, call `prometheor_list_projects` as a prerequisite,
-or require a container named My Brain. Projects and topics are memory content.
+Do not discover a workspace or call `prometheor_list_projects` as a
+prerequisite. Projects and topics are memory content.
 If `project_required` reports ambiguous authorized access, ask once for the
 intended authorized scope; do not guess IDs, merge scopes or create containers.
 An explicit ID is only for an authorized scope the user explicitly selected.
