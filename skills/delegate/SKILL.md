@@ -52,7 +52,10 @@ about a project, never create one and never mention one.
 
 1. Call `list_agents`. Note which apps are online and on which computer. If
    none is online, say so and stop.
-2. Write the brief for someone who has not seen this conversation: goal, the
+2. Read the logbook once for this task (`prometheor_compile_context`, see the
+   memory skill) unless you already did in this task. Put decisions from it that
+   the app must respect into the brief.
+3. Write the brief for someone who has not seen this conversation: goal, the
    files or area to change, constraints, and what "done" means. The first line
    is a short title; it names the chat in the app. At most 4,000 characters.
    No credentials, tokens or personal data the task does not need.

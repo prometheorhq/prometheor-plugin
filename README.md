@@ -6,7 +6,7 @@ Prometheor connects your AI assistant to externally stored personal preferences 
 
 The repository includes `.claude-plugin/plugin.json` for Claude, `.cursor-plugin/plugin.json` for Cursor and `.grok-plugin/plugin.json` for the separate Grok Build developer plugin catalog. All use `skills/memory/SKILL.md` and `skills/delegate/SKILL.md` with one HTTPS MCP connector, `https://app.prometheor.com/mcp`, for both your logbook and handing tasks to your apps. Claude uses `.mcp.json`; Cursor and Grok Build use `mcp.json`. Grok Build catalog inclusion is distinct from consumer Grok Chat connections and from Cursor's Grok Bot. No installation or approval on any of those surfaces is implied.
 
-Enable the plugin and authenticate to your own admitted Prometheor account through the host's OAuth connection to https://app.prometheor.com/mcp. Do not enter owner API keys or share another person's account. Use only the authorized personal scope. Ask the assistant to recall your logbook or a saved preference, or explicitly save one concise fact. With automatic saving on, the assistant keeps only a thin logbook: decisions, status changes and verified results. Everything else is saved only when you ask. Prometheor Settings controls account saving choices and pauses automatic saving for every connected app at once. Only enable automatic saving after giving explicit account-wide consent. A current private or do-not-save instruction overrides the setting. The skill excludes credentials, raw transcripts and regulated or special-category sensitive data.
+Enable the plugin and authenticate to your own admitted Prometheor account through the host's OAuth connection to https://app.prometheor.com/mcp. Do not enter owner API keys or share another person's account. Use only the authorized personal scope. Ask the assistant to recall your logbook or a saved preference, or explicitly save one concise fact. The assistant reads the logbook once at the start of new work and keeps a thin logbook: decisions, status changes and verified results. Everything else is saved only when you ask. Automatic saving is on by default; the server tells each app the current state. A current private or do-not-save instruction in the chat overrides it. The skill excludes credentials, raw transcripts and regulated or special-category sensitive data.
 
 ## Handing tasks to your apps
 
@@ -22,12 +22,15 @@ Your words decide:
 - Ask to use the team or to orchestrate ("use the team for this"): the assistant splits the work, Prometheor chooses the apps, the apps build on each other's results, and you get one combined result.
 - Say neither: the assistant works itself. It may ask once, for example "Should I hand this to Codex?", and delegates only on your yes.
 
-Hosts that do not load skills need a short standing rule. Paste it once into the place your app reads on every chat:
+Hosts that do not load skills need a short standing rule for the logbook and for delegating. Paste it once into the place your app reads on every chat:
 
 - ChatGPT: Settings → Personalization → Custom instructions.
 - Claude Code: your `CLAUDE.md`. Codex: your `AGENTS.md`.
 
 ```text
+Before new work, read my Prometheor logbook once (prometheor_compile_context).
+Save decisions, status changes and verified results there as short logbook
+entries (prometheor_append_checkpoint), nothing else unless I ask.
 Hand work to my other AI apps with the Prometheor delegate tool only when I
 ask. If I name an app or computer ("start a Codex session"), use exactly that
 one. If I say "use the team" or "orchestrate", split the work, let Prometheor

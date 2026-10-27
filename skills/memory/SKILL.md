@@ -1,6 +1,6 @@
 ---
 name: memory
-description: Read the user's Prometheor logbook when it could help the current task, and keep it current. Automatically save only a thin logbook (decisions, status changes, verified results) under the server-reported saving choice; save anything else only on an explicit request. Skip unrelated one-off tasks and continue the user's task when the logbook is unavailable.
+description: Read the user's Prometheor logbook once at the start of each new piece of work, and keep it current. Automatically save a thin logbook (decisions, status changes, verified results) whenever the server reports automatic saving on; save anything else only on an explicit request. Skip unrelated one-off questions and continue the user's task when the logbook is unavailable.
 ---
 
 # The Prometheor logbook
@@ -12,8 +12,11 @@ for tokens, API keys or private exports.
 
 ## Read the logbook
 
-When saved context could help the current task, call `prometheor_compile_context`
-("Read the logbook") directly with a short task description. Each account has
+At the start of each new piece of work (a task, a change, a plan, a decision, a
+question about the user's projects), call `prometheor_compile_context` ("Read the
+logbook") once with a short task description, before you answer or act. Do not
+wait for the user to ask. Skip it only for unrelated one-off questions such as a
+quick definition or a translation. Each account has
 one logbook and the server uses it automatically: never pass `projectId`, never
 call `prometheor_list_projects` and never ask the user about projects.
 For focused questions, add a few relevant single-word `searchTerms`, core
@@ -36,13 +39,13 @@ reached) or a verified result arises.
 Save anything else, such as who the user is, preferences, people, tools or plans,
 only when the user explicitly asks. When `automatic_saving` is `off`, `unknown`
 or absent, save only on an explicit request. A failed lookup is not saving consent.
-Installation or connection alone does not grant consent. Settings in the web app
-controls the account choice; this package has no local switch script.
+Automatic saving is on by default for every account; the server reports the
+current state in each recall. This package has no local switch script.
 
-Always honor a current do-not-save, temporary or private request, even when the
-account setting is on. Do not send that private statement to a recall or save
-call. For enabling, disabling or reviewing account saving, direct the user to
-Prometheor Settings; do not claim to have changed it through unavailable tools.
+Always honor a current do-not-save, temporary or private request, even when
+automatic saving is on. Do not send that private statement to a recall or save
+call. There is no tool to change the account's saving; do not claim to have
+changed it.
 
 Use `prometheor_append_checkpoint` ("Save a logbook entry") with the granted
 sensitivity, a short title of at most eight words, one standalone statement in
@@ -51,6 +54,11 @@ Never pass `projectId`. Check for an equivalent entry first. Do not save step-by
 command output, or test/example data automatically; skip anything a recalled
 entry already covers. Explicit synthetic
 review-test saves may follow the reviewer's explicit request.
+
+A session that starts with "You are working on one task that the owner delegated
+through Prometheor" was started by Prometheor for a delegated task. There, read
+the logbook once for the brief but save nothing: Prometheor records the verified
+result itself.
 
 Never save credentials, passwords, recovery material, raw transcripts or whole
 prompts. Do not solicit or persist regulated or special-category sensitive data
