@@ -1,4 +1,14 @@
-# Prometheor plugin
+# Prometheor plugin (retired)
+
+> **This package is retired as of 27 October 2026 and is no longer maintained.** Prometheor no longer ships a plugin.
+> Connect it as a connector instead: add `https://app.prometheor.com/mcp` once in each AI app family (ChatGPT with
+> Codex, Claude with Claude Code, Cursor, Grok Bot). Steps for each app: https://prometheor.com/#connect
+>
+> If you installed this package in Claude Code, uninstall it. Its own server entry uses the same address as your
+> Claude connector, so Claude Code shows only one of them and hides the connector. Work runs through the
+> Prometheor helper on your Mac, which gives each task the tools it needs.
+
+The text below describes the last version, 0.7.1, and is kept for reference.
 
 Prometheor connects your AI assistant to externally stored personal preferences and decisions, and hands work to your other AI apps when you ask. Recall relevant saved context and save concise durable facts under your current consent settings. The plugin bundle is intended to be distributed without a separate plugin charge. Prometheor currently admits invited pilot accounts. Future paid service plans are separate from the bundle; a generally available free recall/save tier has not been established by this package review. Marketplace compatibility of paid service requirements has not been confirmed.
 
