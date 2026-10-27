@@ -1,15 +1,19 @@
 {
   "name": "prometheor",
-  "version": "0.7.1",
-  "description": "Recall your Prometheor logbook and keep it current, and hand work to your AI apps on your own computer when you ask, where they run visibly in the real app.",
+  "version": "1.0.0",
+  "description": "Your AI apps as one team: hand work to Codex or Claude Code on your Mac, with a shared logbook of decisions, status and results.",
   "author": {
     "name": "Prometheor"
   },
   "homepage": "https://prometheor.com",
   "keywords": [
-    "prometheor"
+    "prometheor",
+    "orchestration",
+    "delegation",
+    "codex",
+    "claude-code",
+    "logbook"
   ],
   "logo": "assets/icon.svg",
-  "skills": "./skills",
   "mcpServers": "./mcp.json"
 }

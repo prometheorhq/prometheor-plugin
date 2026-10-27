@@ -4,13 +4,8 @@ License scope
 The MIT License below applies exclusively to these configuration and
 documentation files (the "Software"):
 
-- .claude-plugin/plugin.json
-- .mcp.json
 - .cursor-plugin/plugin.json
-- .grok-plugin/plugin.json
 - mcp.json
-- skills/memory/SKILL.md
-- skills/delegate/SKILL.md
 - README.md
 
 assets/icon.svg, the Wisp mascot, Prometheor names, logos and other brand
