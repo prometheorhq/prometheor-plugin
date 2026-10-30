@@ -33,7 +33,7 @@ CLI), then authenticate as above:
 
 ## What this plugin contains
 
-Only the connection: `plugin.json`, `mcp_config.json` with the address `https://app.prometheor.com/mcp`, the logo and
+Only the connection: `plugin.json`, `mcp.json` with the address `https://app.prometheor.com/mcp`, the logo and
 this README. There are no scripts, hooks, skills or credentials in it. Sign-in uses OAuth with dynamic client
 registration; never paste API keys or another person's account details.
 
@@ -54,5 +54,5 @@ Apps are switched on and off only in the Prometheor app on your Mac, never by a 
 
 ## License
 
-`plugin.json`, `mcp_config.json` and this README are licensed under MIT; see [LICENSE](../../LICENSE). The Prometheor
+`plugin.json`, `mcp.json` and this README are licensed under MIT; see [LICENSE](../../LICENSE). The Prometheor
 logo, name and other brand identifiers are excluded, with rights reserved. The hosted service is not included.

@@ -7,17 +7,17 @@ work, so every app knows where things stand.
 
 - Connect once. Cursor connects to `https://app.prometheor.com/mcp` and signs in to your Prometheor account.
 - Your own apps and subscriptions do the work. Prometheor never stores your app sign-ins.
-- A small helper on your Mac starts each task and checks first that the app is signed in.
+- The Prometheor app on your Mac starts each task and checks first that the app is signed in.
 - Stop everything with one command.
 
 ## Antigravity
 
 The Google Antigravity entry lives in [`antigravity/prometheor`](antigravity/prometheor) (its own `plugin.json`,
-`mcp_config.json` and logo), so Antigravity's checks see only its files.
+`mcp.json` and logo), so Antigravity's checks see only its files.
 
 ## What you need
 
-A Prometheor account and the Prometheor helper on a Mac (macOS), with Codex, Claude Code or Cursor installed and signed
+A Prometheor account and the Prometheor app on a Mac (macOS), with Codex, Claude Code or Cursor installed and signed
 in on that Mac. Steps: https://prometheor.com/#connect
 
 ## What this entry contains
