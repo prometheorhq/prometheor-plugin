@@ -1,0 +1,22 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "prometheor",
+  "displayName": "Prometheor",
+  "description": "Hand work from Antigravity to Codex, Claude Code or Cursor on your Mac. Watch it run in the real app and get the checked result back in this chat.",
+  "version": "1.0.0",
+  "logo": "assets/logo.png",
+  "suggestedPrompts": [
+    "Which of my AI apps can take a task right now?",
+    "Start a Codex session that adds tests for the login form in this repository.",
+    "What is running in Prometheor right now?"
+  ],
+  "author": {
+    "name": "Prometheor",
+    "email": "info@prometheor.com",
+    "url": "https://prometheor.com"
+  },
+  "homepage": "https://prometheor.com",
+  "repository": "https://github.com/prometheorhq/prometheor-plugin",
+  "license": "MIT",
+  "keywords": ["orchestration", "delegation", "codex", "claude-code", "cursor", "productivity"]
+}

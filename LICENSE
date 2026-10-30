@@ -7,8 +7,11 @@ documentation files (the "Software"):
 - .cursor-plugin/plugin.json
 - mcp.json
 - README.md
+- antigravity/prometheor/plugin.json
+- antigravity/prometheor/mcp_config.json
+- antigravity/prometheor/README.md
 
-assets/icon.svg, the Wisp mascot, Prometheor names, logos and other brand
+assets/icon.svg, antigravity/prometheor/assets/logo.png, the Wisp mascot, Prometheor names, logos and other brand
 identifiers are excluded from this MIT license. Rights in the excluded artwork
 and brand assets are reserved. This license grants no trademark rights.
 Applicable marketplace terms or separate permission may grant their own

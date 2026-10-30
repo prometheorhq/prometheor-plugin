@@ -10,6 +10,11 @@ work, so every app knows where things stand.
 - A small helper on your Mac starts each task and checks first that the app is signed in.
 - Stop everything with one command.
 
+## Antigravity
+
+The Google Antigravity entry lives in [`antigravity/prometheor`](antigravity/prometheor) (its own `plugin.json`,
+`mcp_config.json` and logo), so Antigravity's checks see only its files.
+
 ## What you need
 
 A Prometheor account and the Prometheor helper on a Mac (macOS), with Codex, Claude Code or Cursor installed and signed
