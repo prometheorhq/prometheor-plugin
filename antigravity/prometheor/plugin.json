@@ -2,7 +2,7 @@
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "prometheor",
   "displayName": "Prometheor",
-  "description": "Hand work from Antigravity to Codex, Claude Code or Cursor on your Mac. Watch it run in the real app and get the checked result back in this chat.",
+  "description": "Hand work off from all your AIs to your other AIs. Watch each task run in the real app on your Mac and get the checked result back in this chat.",
   "version": "1.0.0",
   "logo": "assets/logo.png",
   "suggestedPrompts": [

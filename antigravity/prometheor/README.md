@@ -1,7 +1,7 @@
 # Prometheor for Antigravity
 
-Prometheor lets the AI you are talking to hand work to your other AI apps. Ask Antigravity to give a task to Codex,
-Claude Code or Cursor, and it starts on your own Mac, in the real app, where you can watch it. The result comes back
+Prometheor lets every AI you use hand work off to your other AIs. Ask in Antigravity, and the task starts in another
+AI app on your own Mac, in the real app, where you can watch it. The result comes back
 to the chat you asked in, checked against what you asked for. A shared logbook keeps the decisions, status and results
 of your work, so every app knows where things stand.
 
