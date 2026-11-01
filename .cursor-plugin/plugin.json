@@ -1,7 +1,7 @@
 {
   "name": "prometheor",
   "version": "1.0.0",
-  "description": "Your AI apps as one team: hand work to Codex or Claude Code on your Mac, with a shared logbook of decisions, status and results.",
+  "description": "Hand work off from all your AIs to your other AIs on your Mac, with a shared logbook of decisions, status and results.",
   "author": {
     "name": "Prometheor"
   },
