@@ -15,6 +15,22 @@ work, so every app knows where things stand.
 The Google Antigravity entry lives in [`antigravity/prometheor`](antigravity/prometheor) (its own `plugin.json`,
 `mcp.json` and logo), so Antigravity's checks see only its files.
 
+## OpenAI
+
+The OpenAI submission sources are in [`openai/prometheor`](openai/prometheor).
+Run `python3 scripts/build-openai.py` to validate the metadata and build the
+reproducible `out/openai/prometheor-openai.zip`. It contains the portable
+`plugin.json`, `mcp.json`, and the unmodified original logo assets only.
+
+The package keeps the `prometheor` identity and version `1.0.0` for reuploading
+the existing draft. Review credentials, test cases, release notes and country
+targeting are intentionally omitted to preserve the dashboard's saved values.
+Review those values separately before submission. OAuth remains discovered
+from the existing MCP endpoint; this package adds no authentication override.
+Local validation does not establish working reviewer access, live tool scans,
+submission approval or publication. Follow the current
+[OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission).
+
 ## What you need
 
 A Prometheor account and the Prometheor app on a Mac (macOS), with Codex, Claude Code or Cursor installed and signed

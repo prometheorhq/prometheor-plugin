@@ -1,0 +1,48 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "prometheor",
+  "version": "1.0.0",
+  "description": "Hand work off between your AI apps and get the result back in the chat where you asked. A shared logbook keeps decisions, status and results together. Requires a Prometheor account; running tasks needs the Prometheor app on your Mac.",
+  "author": {
+    "name": "Kian Peters",
+    "email": "info@prometheor.com",
+    "url": "https://prometheor.com"
+  },
+  "homepage": "https://prometheor.com",
+  "repository": "https://github.com/prometheorhq/prometheor-plugin",
+  "license": "MIT",
+  "keywords": [
+    "orchestration",
+    "delegation",
+    "logbook",
+    "productivity"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Prometheor",
+        "shortDescription": "Hand work off to other AIs",
+        "longDescription": "Hand work off between your AI apps and get the result back in the chat where you asked. A shared logbook keeps decisions, status and results together. Requires a Prometheor account; running tasks needs the Prometheor app on your Mac.",
+        "developerName": "Kian Peters",
+        "category": "Productivity",
+        "capabilities": [
+          "Delegate tasks",
+          "Track task status",
+          "Read and save logbook entries"
+        ],
+        "websiteURL": "https://prometheor.com",
+        "supportURL": "https://app.prometheor.com/legal/support",
+        "privacyPolicyURL": "https://app.prometheor.com/legal/privacy",
+        "termsOfServiceURL": "https://app.prometheor.com/legal/terms",
+        "defaultPrompt": [
+          "Which of my AI apps can take a task right now?",
+          "What is running right now?",
+          "What did we decide last time?"
+        ],
+        "brandColor": "#C93400",
+        "composerIcon": "./assets/icon.svg",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
+}
