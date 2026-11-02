@@ -1,0 +1,50 @@
+# Prometheor Repo Backup: daily copy of this whole repository (all branches and tags)
+# as one verified git bundle into the Prometheor Backup bucket in Google Cloud.
+# Keyless login (Workload Identity Federation), no stored secret. Never deletes anything.
+# Runs only after the one-time setup in agent-brain docs/operations/REPO_BACKUP_TO_GCS_2026-11-02.md
+# and the repository variable PROMETHEOR_REPO_BACKUP=on.
+name: Prometheor Repo Backup
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: prometheor-repo-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    if: vars.PROMETHEOR_REPO_BACKUP == 'on'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create verified bundle
+        id: bundle
+        run: |
+          git fetch --quiet --tags origin '+refs/heads/*:refs/remotes/origin/*'
+          name="$(echo "$GITHUB_REPOSITORY" | tr '/' '_')"
+          file="$RUNNER_TEMP/$name-$(date -u +%Y-%m-%d).bundle"
+          git bundle create "$file" --branches --remotes --tags
+          git bundle verify "$file" >/dev/null
+          echo "file=$file" >> "$GITHUB_OUTPUT"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          ls -l "$file"
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/713932051458/locations/global/workloadIdentityPools/prometheor-github/providers/github
+          service_account: prometheor-repo-backup@prometheor-nebetra-recovery.iam.gserviceaccount.com
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Upload to Prometheor Backup bucket
+        run: |
+          gcloud storage cp --no-clobber "${{ steps.bundle.outputs.file }}" \
+            "gs://prometheor-nebetra-recovery-713932051458/repos/${{ steps.bundle.outputs.name }}/"
