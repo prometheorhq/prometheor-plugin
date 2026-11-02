@@ -1,8 +1,8 @@
 # Prometheor Repo Backup: daily copy of this whole repository (all branches and tags)
 # as one verified git bundle into the Prometheor Backup bucket in Google Cloud.
-# Keyless login (Workload Identity Federation), no stored secret. Never deletes anything.
-# Runs only after the one-time setup in agent-brain docs/operations/REPO_BACKUP_TO_GCS_2026-11-02.md
-# and the repository variable PROMETHEOR_REPO_BACKUP=on.
+# Keyless login (Workload Identity Federation), no stored secret, no third-party actions
+# (org policy). Create-only upload, never overwrites or deletes anything.
+# Setup: agent-brain docs/operations/REPO_BACKUP_TO_GCS_2026-11-02.md; switch: repo variable PROMETHEOR_REPO_BACKUP=on.
 name: Prometheor Repo Backup
 
 on:
@@ -23,41 +23,54 @@ jobs:
     if: vars.PROMETHEOR_REPO_BACKUP == 'on'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      PROVIDER: projects/713932051458/locations/global/workloadIdentityPools/prometheor-github/providers/github
+      SERVICE_ACCOUNT: prometheor-repo-backup@prometheor-nebetra-recovery.iam.gserviceaccount.com
+      BUCKET: prometheor-nebetra-recovery-713932051458
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Create verified bundle
+      - name: Mirror and bundle (all branches and tags)
         id: bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git fetch --quiet --tags origin '+refs/heads/*:refs/remotes/origin/*'
+          set -euo pipefail
+          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" \
+            clone --quiet --mirror "https://github.com/$GITHUB_REPOSITORY.git" "$RUNNER_TEMP/mirror.git"
           name="$(echo "$GITHUB_REPOSITORY" | tr '/' '_')"
           file="$RUNNER_TEMP/$name-$(date -u +%Y-%m-%d).bundle"
-          git bundle create "$file" --branches --remotes --tags
-          git bundle verify "$file" >/dev/null
+          git -C "$RUNNER_TEMP/mirror.git" bundle create "$file" --branches --tags
+          git -C "$RUNNER_TEMP/mirror.git" bundle verify "$file" >/dev/null
           echo "file=$file" >> "$GITHUB_OUTPUT"
           echo "name=$name" >> "$GITHUB_OUTPUT"
           ls -l "$file"
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: projects/713932051458/locations/global/workloadIdentityPools/prometheor-github/providers/github
-          service_account: prometheor-repo-backup@prometheor-nebetra-recovery.iam.gserviceaccount.com
-          token_format: access_token
-          create_credentials_file: false
+      - name: Keyless Google login (Workload Identity Federation)
+        id: auth
+        run: |
+          set -euo pipefail
+          oidc="$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://iam.googleapis.com/$PROVIDER" | python3 -c 'import json,sys;print(json.load(sys.stdin)["value"])')"
+          federated="$(curl -sSf -X POST https://sts.googleapis.com/v1/token -H 'Content-Type: application/json' \
+            -d "$(python3 -c 'import json,os,sys;print(json.dumps({"grantType":"urn:ietf:params:oauth:grant-type:token-exchange","audience":"//iam.googleapis.com/"+os.environ["PROVIDER"],"scope":"https://www.googleapis.com/auth/cloud-platform","requestedTokenType":"urn:ietf:params:oauth:token-type:access_token","subjectTokenType":"urn:ietf:params:oauth:token-type:jwt","subjectToken":sys.argv[1]}))' "$oidc")" \
+            | python3 -c 'import json,sys;print(json.load(sys.stdin)["access_token"])')"
+          token="$(curl -sSf -X POST "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$SERVICE_ACCOUNT:generateAccessToken" \
+            -H "Authorization: Bearer $federated" -H 'Content-Type: application/json' \
+            -d '{"scope":["https://www.googleapis.com/auth/devstorage.read_write"],"lifetime":"900s"}' \
+            | python3 -c 'import json,sys;print(json.load(sys.stdin)["accessToken"])')"
+          echo "::add-mask::$token"
+          echo "token=$token" >> "$GITHUB_OUTPUT"
       - name: Upload to Prometheor Backup bucket (create only, never overwrite)
         env:
-          TOKEN: ${{ steps.auth.outputs.access_token }}
+          TOKEN: ${{ steps.auth.outputs.token }}
           FILE: ${{ steps.bundle.outputs.file }}
           NAME: ${{ steps.bundle.outputs.name }}
         run: |
+          set -euo pipefail
           object="repos/$NAME/$(basename "$FILE")"
           enc="$(python3 -c 'import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1],safe=""))' "$object")"
           code="$(curl -sS -o "$RUNNER_TEMP/upload.json" -w '%{http_code}' -X POST \
             -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/octet-stream" \
             --data-binary @"$FILE" \
-            "https://storage.googleapis.com/upload/storage/v1/b/prometheor-nebetra-recovery-713932051458/o?uploadType=media&ifGenerationMatch=0&name=$enc")"
+            "https://storage.googleapis.com/upload/storage/v1/b/$BUCKET/o?uploadType=media&ifGenerationMatch=0&name=$enc")"
           if [ "$code" = 412 ]; then echo "already backed up today: $object"; exit 0; fi
           if [ "$code" != 200 ]; then echo "upload failed ($code)"; head -c 500 "$RUNNER_TEMP/upload.json"; exit 1; fi
           echo "uploaded $object"
