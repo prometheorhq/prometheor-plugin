@@ -39,12 +39,25 @@ jobs:
           echo "file=$file" >> "$GITHUB_OUTPUT"
           echo "name=$name" >> "$GITHUB_OUTPUT"
           ls -l "$file"
-      - uses: google-github-actions/auth@v2
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/713932051458/locations/global/workloadIdentityPools/prometheor-github/providers/github
           service_account: prometheor-repo-backup@prometheor-nebetra-recovery.iam.gserviceaccount.com
-      - uses: google-github-actions/setup-gcloud@v2
-      - name: Upload to Prometheor Backup bucket
+          token_format: access_token
+          create_credentials_file: false
+      - name: Upload to Prometheor Backup bucket (create only, never overwrite)
+        env:
+          TOKEN: ${{ steps.auth.outputs.access_token }}
+          FILE: ${{ steps.bundle.outputs.file }}
+          NAME: ${{ steps.bundle.outputs.name }}
         run: |
-          gcloud storage cp --no-clobber "${{ steps.bundle.outputs.file }}" \
-            "gs://prometheor-nebetra-recovery-713932051458/repos/${{ steps.bundle.outputs.name }}/"
+          object="repos/$NAME/$(basename "$FILE")"
+          enc="$(python3 -c 'import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1],safe=""))' "$object")"
+          code="$(curl -sS -o "$RUNNER_TEMP/upload.json" -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/octet-stream" \
+            --data-binary @"$FILE" \
+            "https://storage.googleapis.com/upload/storage/v1/b/prometheor-nebetra-recovery-713932051458/o?uploadType=media&ifGenerationMatch=0&name=$enc")"
+          if [ "$code" = 412 ]; then echo "already backed up today: $object"; exit 0; fi
+          if [ "$code" != 200 ]; then echo "upload failed ($code)"; head -c 500 "$RUNNER_TEMP/upload.json"; exit 1; fi
+          echo "uploaded $object"
