@@ -14,6 +14,6 @@
     "claude-code",
     "logbook"
   ],
-  "logo": "assets/icon.svg",
+  "logo": "assets/logo.png",
   "mcpServers": "./mcp.json"
 }
