@@ -15,51 +15,57 @@ SOURCE = ROOT / "openai" / "prometheor"
 OUTPUT = ROOT / "out" / "openai" / "prometheor-openai.zip"
 
 
+def require(condition, message="Invalid connector package"):
+    """A security gate that remains active under -O and PYTHONOPTIMIZE."""
+    if not condition:
+        raise ValueError(message)
+
+
 def validate(files):
-    assert set(files) == {"plugin.json", "mcp.json", "assets/icon.svg", "assets/logo.png"}
+    require(set(files) == {"plugin.json", "mcp.json", "assets/icon.svg", "assets/logo.png"})
     manifest = json.loads(files["plugin.json"])
     mcp = json.loads(files["mcp.json"])
-    assert manifest["$schema"] == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
-    assert manifest["name"] == "prometheor" and manifest["version"] == "1.0.0"
-    assert manifest["author"]["name"] == "Kian Peters"
+    require(manifest["$schema"] == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
+    require(manifest["name"] == "prometheor" and manifest["version"] == "1.0.0")
+    require(manifest["author"]["name"] == "Kian Peters")
     extension = manifest["extensions"]["com.openai"]
     # Preserve saved review details, release notes and country targeting on reupload.
-    assert set(extension) == {"interface"}
+    require(set(extension) == {"interface"})
     interface = extension["interface"]
     for field, limit in (("displayName", 30), ("shortDescription", 30),
                          ("longDescription", 4000), ("developerName", 80)):
         value = interface[field]
-        assert isinstance(value, str) and 0 < len(value) <= limit, field
-        assert not re.search(r"[\x00-\x1f\x7f]", value), field
-    assert len(manifest["description"]) <= 4000
-    assert interface["developerName"] == "Kian Peters"
-    assert len(interface["defaultPrompt"]) <= 3
-    assert all(0 < len(prompt) <= 128 for prompt in interface["defaultPrompt"])
-    assert len(interface["capabilities"]) <= 20
-    assert all(0 < len(value) <= 120 for value in interface["capabilities"])
-    assert interface["websiteURL"] == "https://prometheor.com"
+        require(isinstance(value, str) and 0 < len(value) <= limit, field)
+        require(not re.search(r"[\x00-\x1f\x7f]", value), field)
+    require(len(manifest["description"]) <= 4000)
+    require(interface["developerName"] == "Kian Peters")
+    require(len(interface["defaultPrompt"]) <= 3)
+    require(all(0 < len(prompt) <= 128 for prompt in interface["defaultPrompt"]))
+    require(len(interface["capabilities"]) <= 20)
+    require(all(0 < len(value) <= 120 for value in interface["capabilities"]))
+    require(interface["websiteURL"] == "https://prometheor.com")
     for field, suffix in (("supportURL", "support"), ("privacyPolicyURL", "privacy"),
                           ("termsOfServiceURL", "terms")):
-        assert interface[field] == "https://app.prometheor.com/legal/" + suffix
-    assert interface["composerIcon"] == "./assets/icon.svg"
-    assert interface["logo"] == "./assets/logo.png"
-    assert mcp == {
+        require(interface[field] == "https://app.prometheor.com/legal/" + suffix)
+    require(interface["composerIcon"] == "./assets/icon.svg")
+    require(interface["logo"] == "./assets/logo.png")
+    require(mcp == {
         "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
         "mcpServers": {"prometheor": {
             "type": "streamable-http", "url": "https://app.prometheor.com/mcp"}},
-    }
+    })
     # Only explicit public metadata and original assets enter the archive.
     text = files["plugin.json"] + files["mcp.json"] + files["assets/icon.svg"]
-    assert not re.search(rb"(?i)(client.?secret|access.?token|refresh.?token|password|"
+    require(not re.search(rb"(?i)(client.?secret|access.?token|refresh.?token|password|"
                          rb"test_credentials|reviewer_instructions|authorization|"
-                         rb"-----BEGIN.*PRIVATE KEY|sk-[a-z0-9]{20})", text)
+                         rb"-----BEGIN.*PRIVATE KEY|sk-[a-z0-9]{20})", text))
     png = files["assets/logo.png"]
-    assert png[:8] == b"\x89PNG\r\n\x1a\n" and png[12:16] == b"IHDR"
-    assert struct.unpack(">II", png[16:24]) == (512, 512)
+    require(png[:8] == b"\x89PNG\r\n\x1a\n" and png[12:16] == b"IHDR")
+    require(struct.unpack(">II", png[16:24]) == (512, 512))
     svg = ET.fromstring(files["assets/icon.svg"])
-    assert svg.attrib["viewBox"] == "0 0 128 128"
-    assert svg.attrib["width"] == svg.attrib["height"] == "512"
-    assert all(len(files[name]) <= 5 * 1024 * 1024 for name in files if name.startswith("assets/"))
+    require(svg.attrib["viewBox"] == "0 0 128 128")
+    require(svg.attrib["width"] == svg.attrib["height"] == "512")
+    require(all(len(files[name]) <= 5 * 1024 * 1024 for name in files if name.startswith("assets/")))
 
 
 def archive(files):
@@ -80,15 +86,15 @@ def main():
         "assets/icon.svg": ROOT / "assets" / "icon.svg",
         "assets/logo.png": ROOT / "assets" / "logo.png",
     }
-    assert all(not path.is_symlink() and path.is_file() for path in paths.values())
+    require(all(not path.is_symlink() and path.is_file() for path in paths.values()))
     files = {name: path.read_bytes() for name, path in paths.items()}
     validate(files)
     data = archive(files)
-    assert data == archive(files), "Packaging must be reproducible"
+    require(data == archive(files), "Packaging must be reproducible")
     with zipfile.ZipFile(io.BytesIO(data)) as bundle:
-        assert bundle.testzip() is None
-        assert len(bundle.namelist()) == len(files)
-        assert {name: bundle.read(name) for name in bundle.namelist()} == files
+        require(bundle.testzip() is None)
+        require(len(bundle.namelist()) == len(files))
+        require({name: bundle.read(name) for name in bundle.namelist()} == files)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_bytes(data)
     print(json.dumps({"path": str(OUTPUT), "sha256": hashlib.sha256(data).hexdigest(),
