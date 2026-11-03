@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.prometheor/prometheor",
+  "description": "Your AI apps as one team: hand work to Codex or Claude Code on your Mac, with a shared logbook.",
+  "title": "Prometheor",
+  "version": "0.9.2",
+  "websiteUrl": "https://prometheor.com",
+  "icons": [
+    {
+      "src": "https://prometheor.com/assets/prometheor-cut-icon-96.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "96x96"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://app.prometheor.com/mcp"
+    }
+  ]
+}

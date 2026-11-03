@@ -1,14 +1,38 @@
-# Prometheor for Cursor
+# Prometheor
 
-Prometheor lets every AI you use hand work off to your other AIs. Ask in Cursor, and the task starts in another AI
-app on your own Mac, in the real app, where you can watch it. The result comes back to the chat
-you asked in, checked against what you asked for. A shared logbook keeps the decisions, status and results of your
-work, so every app knows where things stand.
+Prometheor lets every AI you use hand work off to your other AIs. Ask in one AI app, and the task starts in another AI
+app on your own Mac, in the real app, where you can watch it. The result comes back to the chat you asked in, checked
+against what you asked for. A shared logbook keeps the decisions, status and results of your work, so every app knows
+where things stand.
 
-- Connect once. Cursor connects to `https://app.prometheor.com/mcp` and signs in to your Prometheor account.
+The service is closed source; this repo holds the connector files.
+
+## Connect
+
+Every app connects to the same address and signs in to your Prometheor account with OAuth:
+
+```
+https://app.prometheor.com/mcp
+```
+
+| App | How to connect |
+| --- | --- |
+| ChatGPT | Install Prometheor from the ChatGPT app directory, or add a connector with the address above. |
+| Claude (web, desktop, Claude Code) | Settings, Connectors, add a custom connector with the address above. |
+| Cursor | Install the Prometheor plugin from this repository (`.cursor-plugin/plugin.json`), or add the address above as a remote MCP server. |
+| Grok Bot | Add Prometheor as a connector with the address above. |
+| Muse | Add Prometheor as a connector with the address above. |
+| Google Antigravity | Use the entry in [`antigravity/prometheor`](antigravity/prometheor). |
+| Any other MCP client | Add a remote (streamable HTTP) MCP server with the address above. |
+
+Step-by-step guides with screenshots: https://prometheor.com/#connect
+
 - Your own apps and subscriptions do the work. Prometheor never stores your app sign-ins.
 - The Prometheor app on your Mac starts each task and checks first that the app is signed in.
 - Stop everything with one command.
+
+The registry entry for the [MCP Registry](https://registry.modelcontextprotocol.io) is [`server.json`](server.json)
+(`com.prometheor/prometheor`).
 
 ## Antigravity
 
@@ -36,7 +60,7 @@ submission approval or publication. Follow the current
 A Prometheor account and the Prometheor app on a Mac (macOS), with Codex, Claude Code or Cursor installed and signed
 in on that Mac. Steps: https://prometheor.com/#connect
 
-## What this entry contains
+## What the Cursor entry contains
 
 Only the connection: `.cursor-plugin/plugin.json`, `mcp.json` with the address `https://app.prometheor.com/mcp`, and
 the logo. There are no scripts, hooks, skills or credentials in this repository. Sign-in uses OAuth in Cursor; never
@@ -59,7 +83,7 @@ Apps are switched on and off only in the Prometheor app, never by a prompt.
 
 ## License and brand assets
 
-`.cursor-plugin/plugin.json`, `mcp.json` and this README are licensed under MIT; see [LICENSE](LICENSE). The
+`.cursor-plugin/plugin.json`, `mcp.json`, `server.json` and this README are licensed under MIT; see [LICENSE](LICENSE). The
 Prometheor logo in `assets/icon.svg`, the Prometheor name and other brand identifiers are excluded, with rights
 reserved. The hosted service and its backend are not included.
 
